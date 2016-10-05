@@ -1,0 +1,79 @@
+<!doctype html>
+
+<html lang="fr">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>Le Voyageur de Santé</title>
+        <style type="text/css">
+          html, body { height: 100%; margin: 0; padding: 0; }
+          #map {    height: 600px;
+                    width: 80%;
+                    margin-left: 10%;
+                    margin-top: 10%;
+                }
+        </style>
+	</head>
+	<body>
+        
+        
+		<h1>Le Voyageur de Santé</h1>
+		<form id="secretaire" name="input" action="/" method="POST">
+			<h2>Connectez vous en tant que secrétaire</h2>
+			<input value="Secretaire" type="hidden" name="login"></input>
+			<input type="submit" value="Connection"/>
+		</form>
+	
+		<form id="infirmier" name="input" action="/INFIRMIERE" method="POST">
+			<h2>Connectez vous en tant qu'infirmier</h2>
+			<label class="login">
+				Identifiant : 
+				<input list="logins" type="text" name="id"></input>
+			</label>
+			<datalist id="logins"></datalist>
+			<input type="submit" value="Connection"/>
+		</form>
+
+        <div id="map"></div>
+        <script type="text/javascript">
+
+           
+            
+            var map;
+            function initMap() {
+              map = new google.maps.Map(document.getElementById('map'), {
+                center: {lat: 43.299999, lng: 5.4},
+                  mapTypeId: google.maps.MapTypeId.TERRAIN,
+                zoom: 11
+              });
+                
+                var marker = new google.maps.Marker({
+                position: {lat: 43.299999, lng: 5.4},
+                map: map,
+                draggable: true,
+                title: 'Hello World!'
+              });
+                
+                // This event listener calls addMarker() when the map is clicked.
+              google.maps.event.addListener(map, 'click', function(event) {
+                addMarker(event.latLng, map);
+              });
+            }
+            
+            // Adds a marker to the map.
+            function addMarker(location, map) {
+              // Add the marker at the clicked location, and add the next-available label
+              // from the array of alphabetical characters.
+              var marker = new google.maps.Marker({
+                position: location,
+                map: map
+              });
+            }
+
+            google.maps.event.addDomListener(window, 'load', initialize);
+
+        </script>
+        <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDE084V7ig2XsFiFpcamrhewrhOjwLwnjw&callback=initMap">
+        </script>
+
+	</body>
+</html>

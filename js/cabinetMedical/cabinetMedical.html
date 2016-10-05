@@ -1,0 +1,44 @@
+<h1>{{$ctrl.titre}}</h1> <!-- $ctrl fait référence au controller -->
+
+
+
+
+<div ng-cloak>
+  <md-content>
+    <md-tabs md-dynamic-height md-border-bottom>
+      <md-tab label="Infirmiers" ng-click="$ctrl.majData()"> <!--Mise à jour données lors du changement de tab-->
+        <md-content class="md-padding">
+          <h1 class="md-display-2">Infirmiers</h1>
+          
+            <!--appel de notre composant infirmier-->
+           <infirmier data="$ctrl.data">
+            
+            </infirmier>
+            
+        </md-content>
+      </md-tab>
+      <md-tab label="Patients du cabinet" ng-click="$ctrl.majData()">
+        <md-content class="md-padding">
+          <h1 class="md-display-2">Patients du cabinet</h1>
+            
+            <!--appel de notre composant patient-->
+            <patient data="$ctrl.data"> 
+                
+            </patient>
+            
+        </md-content>
+      </md-tab>
+        <md-tab label="Patients non affectés" ng-click="$ctrl.majData()">
+        <md-content class="md-padding">
+          <h1 class="md-display-2">Patients non affectés</h1>
+            
+            <!--appel de notre composant patient non affecte-->
+            <patient-non-aff data="$ctrl.data">
+            
+            </patient-non-aff>            
+            
+        </md-content>
+      </md-tab>
+    </md-tabs>
+  </md-content>
+</div>

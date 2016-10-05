@@ -1,0 +1,65 @@
+<!--affiche le texte si aucun patient n'est pas affecté -->
+<p ng-show="$ctrl.data.patientNonAffectes.length == 0">Actuellement tous les patients sont affectés</p>
+
+<div >
+    <!--pour chaque patient présent dans le tableau des non affecté on va afficher leur info sour forme de liste et donner la possibilité de les affecter-->
+    <md-list ng-repeat="patient in $ctrl.data.patientNonAffectes" class="md-whiteframe-2dp">
+        <md-list-action>
+          <md-menu md-offset="0 -7">
+         <md-list-item  ng-click="$mdOpenMenu()" class="md-raised">
+           
+           {{ patient.name | uppercase }} {{ patient.forname }}              
+             
+          </md-list-item> 
+         
+         <md-menu-content width="6" md-whiteframe="24" >
+            <md-menu-item>
+             <p>Sex : {{patient.sex}}</p>
+            </md-menu-item>
+            <md-menu-item >
+             <p>Date de naissance : {{patient.birthday}} </p>
+            </md-menu-item>
+            <md-menu-item >
+             <p>Numéro : {{patient.numero}}</p>
+            </md-menu-item>
+             <md-menu-item>
+             <p><strong>Adresse :</strong> </br> Rue : {{patient.adress.street}} </br> Ville : {{patient.adress.city}} </br> Code Postal :  {{patient.adress.postalCode}}</p>
+            </md-menu-item>
+          </md-menu-content>
+        </md-menu>
+
+
+        
+     </md-list-action> 
+
+
+    <!--formulaire de recherche d'infirmier pour l'affectation-->
+    <form name="AjouterInfi" novalidate ng-submit="AjouterInfi.$valid" ng-show="$ctrl.formulaire == true">
+        <md-input-container>
+                    <label>Sélectionnez un infirmier</label>
+                    <md-select  name="idInfi" ng-model="$ctrl.patientAff.infirmier" required>
+                        <md-option ng-repeat="inf in $ctrl.data.infirmiers" ng-value="inf.id" >
+                        {{ inf.name | uppercase }} {{ inf.forname }}
+                        </md-option>
+                    </md-select>
+                    <div ng-messages="AjouterInfi.idInfi.$error">
+                        <div ng-message="required"></div>
+                    </div>
+            
+        </md-input-container>
+        <md-button type="submit" class="md-raised md-primary" ng-disabled="AjouterInfi.idInfi.$invalid" ng-click="$ctrl.affecterPatient(patient.numero)">Confirmer affectation</md-button>
+        <md-button class="md-primary md-raised" ng-click="$ctrl.showFormulaire()" >
+        Annuler
+        </md-button>
+    </form>
+                    
+                    
+        <md-button class="md-primary md-raised" ng-click="$ctrl.showFormulaire()" >
+            Affecter patient
+        </md-button>
+
+
+    </md-list>
+
+</div>  
+

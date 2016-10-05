@@ -1,0 +1,38 @@
+<div  ng-repeat="inf in $ctrl.data.infirmiers" >  <!--  on repete pour chaque infirmier (inf) de notre tableau-->
+    <md-card flex md-theme-watch>  
+        <md-card-title>
+          <md-card-title-text> 
+            <span  class="md-headline"> 
+              {{ inf.name | uppercase }} {{ inf.forname }}       <!-- On recupere les valeur des attribut name et forname -->       
+            </span>
+            <span class="md-subhead">S'occupe actuellement de {{inf.patients.length}} patient(s) : </span>
+          </md-card-title-text>
+                
+          <md-card-title-media>
+            <img ng-src="../../{{ inf.photo }}">
+            <md-card-actions layout="row" layout-align="end center">
+                
+            </md-card-actions>
+          </md-card-title-media>
+        </md-card-title>
+        <md-card-content flex> <!-- on va maintenant afficher la liste de patients dont l'infirmier s'occupe -->
+            <md-card-actions flex layout="row" layout-align="start">
+              <md-card flex md-theme-watch ng-repeat="patient in inf.patients"> <!-- boucle sur les patients de notre infirmier-->
+                    <md-card-title>
+                      <md-card-title-text> 
+                        <span  class="md-headline"> 
+                          {{ patient.name | uppercase }} {{ patient.forname }}              
+                        </span>
+                      </md-card-title-text>
+                    </md-card-title>
+                    <md-card-content>
+                          <md-card-actions layout="row" layout-align="start center">
+                          <md-button  class="md-raised md-primary" ng-click="$ctrl.desaffecterPatient(patient.numero)">Désaffecter</br>le patient</md-button>
+                        <!-- bouton pour désaffecter le patient de son infirmier avec en paremètre le numero de sécu -->
+                        </md-card-actions>
+                    </md-card-content>
+                </md-card>
+            </md-card-actions>
+        </md-card-content>
+    </md-card>
+</div>    

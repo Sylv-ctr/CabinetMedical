@@ -1,0 +1,41 @@
+<div >
+    <!--boucle dans notre tableau de patients. On va afficher sous forme de liste leur nom et prénom-->
+    <!--puis au clic afficher des informations complémentaires-->
+    <md-list ng-repeat="patient in $ctrl.data.patients" class="md-whiteframe-2dp">
+        <md-list-action>
+          <md-menu md-offset="0 -7">
+         <md-list-item  ng-click="$mdOpenMenu()" class="md-raised">
+           
+           {{ patient.name | uppercase }} {{ patient.forname }}              
+             
+          </md-list-item> 
+         
+         <md-menu-content width="6" md-whiteframe="24" >
+            <md-menu-item>
+             <p>Sex : {{patient.sex}}</p>
+            </md-menu-item>
+            <md-menu-item >
+             <p>Date de naissance : {{patient.birthday}} </p>
+            </md-menu-item>
+            <md-menu-item >
+             <p>Numéro : {{patient.numero}}</p>
+            </md-menu-item>
+             <md-menu-item>
+             <p><strong>Adresse :</strong>
+                 
+                </br> Rue : {{patient.adress.street}} </br> Ville : {{patient.adress.city}} </br> Code Postal :  {{patient.adress.postalCode}}</p>
+            </md-menu-item>
+          </md-menu-content>
+        </md-menu>
+
+        <!--Bouton pour supprimer le patient si besoin -->
+        <md-button class="md-raised md-primary" ng-click="$ctrl.supprimerPatient(patient.numero)">Supprimer ce patient</md-button>
+     </md-list-action> 
+    </md-list>
+</div>  
+
+<!-- appel du composant formulaire d'ajout patient avec en paramètre la méthode POST pour pousser les données vers la BDD-->
+<!--data="$ctrl.data" contient les toutes les données de notre vabinet-->
+<form-patient data="$ctrl.data" onValidation="POST">
+
+</form-patient>

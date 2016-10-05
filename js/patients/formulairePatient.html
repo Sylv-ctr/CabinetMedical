@@ -1,0 +1,260 @@
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDE084V7ig2XsFiFpcamrhewrhOjwLwnjw&sensor=false"></script>
+        
+<md-button ng-click="$ctrl.showFormulaire()">
+<md-icon style="height: 30px; width: 30px; fill:dodgerblue" md-svg-src="img/add_person.svg"></md-icon>
+</md-button>
+
+ <form name="AjouterPatient" novalidate ng-submit="AjouterPatient.$valid && $ctrl.ajouterPatient()" id="popupContainer" layout="column" layout-padding ng-cloak class="md-inline-form" ng-show="$ctrl.formulaire==true">
+  <br/>
+  <md-content class="md-no-momentum">
+  
+   <div layout-gt-sm="row">
+    <md-input-container>
+      <!-- Use floating label instead of placeholder -->
+      <label>Nom</label>
+      <md-icon md-svg-src="img/person.svg" class="icon"></md-icon>
+      <input name ="Nom" ng-model="$ctrl.nouveauPatient.patientName" type="text">
+      <div ng-messages="AjouterPatient.nom.$error">
+        <div ng-message="required">Le Nom est requis!</div>
+        </div>
+    </md-input-container>
+     <md-input-container>
+	    <label>Prénom</label>
+	    <input type="text" ng-model="$ctrl.nouveauPatient.patientForname">
+	</md-input-container>
+     <md-input-container>
+	    <label for="patientBirthday">Date de naissance</label>
+	    <input type="text" ng-model="$ctrl.nouveauPatient.patientBirthday">
+	</md-input-container>
+    
+   <md-input-container>
+		<label>Sexe</label>
+		
+		<md-select ng-model="$ctrl.nouveauPatient.patientSex">
+			<md-option ng-repeat="x in $ctrl.sexe" ng-value="x.sexe">
+			{{ x.sexe }}
+			</md-option>
+		</md-select>
+	</md-input-container>
+      </div>
+	
+    </br>
+
+	<md-input-container>
+	    <label for="patientNumber">N° de sécurité sociale</label>
+	    
+	    <input name="social" type="text" ng-model="$ctrl.nouveauPatient.patientNumber" ng-pattern="/^[0-9]{15}$/" required>
+	    <div ng-messages="AjouterPatient.social.$error">
+	        <div ng-message="pattern","required"> SSN composé de 15 chiffres </div>
+	    </div>
+	</md-input-container>
+
+      </br>
+      <div layout-gt-sm="row">
+      <md-input-container>
+	    <label>N°</label>
+	    <md-icon md-svg-src="img/adresse.svg" class="icon"></md-icon>
+	    <input type="text" ng-model="$ctrl.nouveauPatient.patientStreetNumber">
+	</md-input-container>
+   
+    <md-input-container class="md-block">
+	    <label for="patientStreet">Rue</label>
+	    
+	    <input type="text" ng-model="$ctrl.nouveauPatient.patientStreet">
+	</md-input-container>
+</div>
+
+	<md-input-container>
+	    <label for="postalCode">Code postal</label>
+	    
+	    <input type="text" ng-model="$ctrl.nouveauPatient.postalCode">
+	</md-input-container>
+
+	<md-input-container>
+	    <label for="patientCity">Ville</label>
+	    <input type="text" ng-model="$ctrl.nouveauPatient.patientCity">
+	</md-input-container>
+  </md-content>
+  
+    <div id="map"></div>
+    
+
+  <md-checkbox ng-model="$ctrl.check">
+		 Sélectionnez un infirmier
+	</md-checkbox>
+	<div layout-gt-sm="row">
+	<md-input-container ng-show="$ctrl.check == true">
+		<label>Sélectionnez un infirmier</label>
+		<md-select ng-model="$ctrl.patientAff.infirmier">
+			<md-option ng-repeat="inf in $ctrl.data.infirmiers" ng-value="inf.id">
+			{{ inf.name | uppercase }} {{ inf.forname }}
+			</md-option>
+		</md-select>
+	</md-input-container>
+        
+        
+
+	<md-button ng-disabled="AjouterPatient.nom.$invalid || AjouterPatient.social.$invalid" class="md-raised md-primary" type="submit">Submit</md-button>
+	</div>
+  
+</form>
+
+<!--
+<form name="AjouterPatient" novalidate ng-submit="AjouterPatient.$valid && $ctrl.ajouterPatient()" id="popupContainer">
+	<md-input-container>
+        <label for="patientName">Nom</label>
+        <input name="nom" type="text" ng-model="$ctrl.nouveauPatient.patientName" required>
+        <div ng-messages="AjouterPatient.nom.$error">
+            <div ng-message="required">Name is required.</div>
+        </div>
+  	</md-input-container>
+
+	<md-input-container>
+	    <label for="patientForname">Prenom</label>
+	    <input type="text" ng-model="$ctrl.nouveauPatient.patientForname">
+	</md-input-container>
+
+	<md-input-container>
+		<label>Sexe</label>
+		<md-select ng-model="$ctrl.nouveauPatient.patientSex">
+			<md-option ng-repeat="x in $ctrl.sexe" ng-value="x.sexe">
+			{{ x.sexe }}
+			</md-option>
+		</md-select>
+	</md-input-container>
+
+	<md-input-container>
+	    <label for="patientNumber">N° de sécurité sociale</label>
+	    <input name="social" type="text" ng-model="$ctrl.nouveauPatient.patientNumber" ng-pattern="/^[0-9]{15}$/" required>
+	    <div ng-messages="AjouterPatient.social.$error">
+	        <div ng-message="pattern","required"> SSN composé de 15 chiffres </div>
+	    </div>
+	</md-input-container>
+
+	<md-input-container>
+	    <label for="patientBirthday">Date de naissance</label>
+	    <input type="text" ng-model="$ctrl.nouveauPatient.patientBirthday">
+	</md-input-container>
+
+	<md-input-container>
+	    <label for="patientFloor">Etage</label>
+	    <input type="text" ng-model="$ctrl.nouveauPatient.patientFloor">
+	</md-input-container>
+
+	<md-input-container>
+	    <label for="patientStreet">Rue</label>
+	    <input type="text" ng-model="$ctrl.nouveauPatient.patientStreet">
+	</md-input-container>
+
+	<md-input-container>
+	    <label for="postalCode">Code postal</label>
+	    <input type="text" ng-model="$ctrl.nouveauPatient.postalCode">
+	</md-input-container>
+
+	<md-input-container>
+	    <label for="patientCity">Ville</label>
+	    <input type="text" ng-model="$ctrl.nouveauPatient.patientCity">
+	</md-input-container>
+
+	</br>
+
+	<md-checkbox ng-model="$ctrl.check">
+		 Sélectionnez un infirmier
+	</md-checkbox>
+
+	<md-input-container ng-show="$ctrl.check == true">
+		<label>Sélectionnez un infirmier</label>
+		<md-select ng-model="$ctrl.affecterInfirmier.infirmier">
+			<md-option ng-repeat="inf in $ctrl.data.infirmiers" ng-value="inf.id">
+			{{ inf.name | uppercase }} {{ inf.forname }}
+			</md-option>
+		</md-select>
+	</md-input-container>
+
+	<md-button ng-disabled="AjouterPatient.nom.$invalid || AjouterPatient.social.$invalid" class="md-raised md-primary" 
+                type="submit">Submit</md-button>
+
+
+</form-->
+
+<!--
+<form name="AjouterPatient" novalidate ng-submit="AjouterPatient.$valid && $ctrl.ajouterPatient()" id="popupContainer">
+	<md-input-container>
+        <label for="patientName">Nom</label>
+         <md-icon md-svg-src="img/person_add.svg" class="name"></md-icon>
+        <input name="nom" type="text" ng-model="$ctrl.nouveauPatient.patientName" required>
+        <div ng-messages="AjouterPatient.nom.$error">
+            <div ng-message="required">Name is required.</div>
+        </div>
+  	</md-input-container>
+
+	<md-input-container>
+	    <label for="patientForname">Prenom</label>
+	    <input type="text" ng-model="$ctrl.nouveauPatient.patientForname">
+	</md-input-container>
+
+	<md-input-container>
+		<label>Sexe</label>
+		<md-select ng-model="$ctrl.nouveauPatient.patientSex">
+			<md-option ng-repeat="x in $ctrl.sexe" ng-value="x.sexe">
+			{{ x.sexe }}
+			</md-option>
+		</md-select>
+	</md-input-container>
+
+	<md-input-container>
+	    <label for="patientNumber">N° de sécurité sociale</label>
+	    <input name="social" type="text" ng-model="$ctrl.nouveauPatient.patientNumber" ng-pattern="/^[0-9]{15}$/" required>
+	    <div ng-messages="AjouterPatient.social.$error">
+	        <div ng-message="pattern","required"> SSN composé de 15 chiffres </div>
+	    </div>
+	</md-input-container>
+
+	<md-input-container>
+	    <label for="patientBirthday">Date de naissance</label>
+	    <input type="text" ng-model="$ctrl.nouveauPatient.patientBirthday">
+	</md-input-container>
+    
+    <br/>
+
+	<md-input-container>
+	    <label for="patientFloor">Etage</label>
+        <md-icon md-svg-src="img/adress.svg" class="adress"></md-icon>
+	    <input type="text" ng-model="$ctrl.nouveauPatient.patientFloor">
+	</md-input-container>
+
+	<md-input-container>
+	    <label for="patientStreet">Rue</label>
+	    <input type="text" ng-model="$ctrl.nouveauPatient.patientStreet">
+	</md-input-container>
+
+	<md-input-container>
+	    <label for="postalCode">Code postal</label>
+	    <input type="text" ng-model="$ctrl.nouveauPatient.postalCode">
+	</md-input-container>
+
+	<md-input-container>
+	    <label for="patientCity">Ville</label>
+	    <input type="text" ng-model="$ctrl.nouveauPatient.patientCity">
+	</md-input-container>
+
+	</br>
+
+	<md-checkbox ng-model="$ctrl.check">
+		 Sélectionnez un infirmier
+	</md-checkbox>
+
+	<md-input-container ng-show="$ctrl.check == true">
+		<label>Sélectionnez un infirmier</label>
+		<md-select ng-model="$ctrl.affecterInfirmier.infirmier">
+			<md-option ng-repeat="inf in $ctrl.data.infirmiers" ng-value="inf.id">
+			{{ inf.name | uppercase }} {{ inf.forname }}
+			</md-option>
+		</md-select>
+	</md-input-container>
+
+	<md-button ng-disabled="AjouterPatient.nom.$invalid || AjouterPatient.social.$invalid" class="md-raised md-primary" 
+                type="submit">Submit</md-button>
+
+
+</form-->
